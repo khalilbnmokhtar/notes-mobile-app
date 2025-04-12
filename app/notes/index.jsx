@@ -10,6 +10,8 @@ import {
 import NoteList from "../../components/NoteList";
 import AddNoteModal from "../../components/AddNoteModal";
 import noteService from "../../services/noteService";
+import { useRouter } from "expo-router";
+import { useAuth } from "../../contexts/AuthContext";
 
 
 const NoteScreen = () => {
@@ -19,14 +21,20 @@ const NoteScreen = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [newNote, setNewNote] = useState("");
-
+  const router = useRouter()
+  const { user , loading:authLoading } = useAuth()
 
   useEffect(()=>{
-    fetchNotes()
-  },[])
+    if (!authLoading && !user) {
+      router.replace(('/auth'))
+    }
+  },[user , authLoading])
+  useEffect(()=>{
+    user && fetchNotes()
+  },[user])
   const fetchNotes = async () => {
     setLoading(true)
-    const response = await noteService.getNotes()
+    const response = await noteService.getNotes(user.$id)
     if(response.error){
       setError(response.error)
       Alert.alert("Error", response.error)
@@ -39,7 +47,7 @@ const NoteScreen = () => {
 
   const addNote = async () => {
     if (newNote.trim() === "") return;
-     const response = await noteService.addNote(newNote)
+     const response = await noteService.addNote(user.$id, newNote)
      if(response.error){
       Alert.alert("Error" , response.error)
      }else{
@@ -97,7 +105,13 @@ const NoteScreen = () => {
       ) : (
         <>
            {error && <Text style={styles.errorText}>{error}</Text>}
-           <NoteList notes={notes}  onDelete={DeleteNote} onEdit={updateNote}/>
+            
+           {notes.length === 0 ? (
+            <Text style={styles.noNotesText}>You have no notes</Text>
+          ) : (
+            <NoteList notes={notes} onDelete={deleteNote} onEdit={editNote} />
+          )}
+     
         </>
       )
      }

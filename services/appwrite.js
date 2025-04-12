@@ -1,5 +1,5 @@
 import { Platform } from "react-native";
-import { Client , Databases } from "react-native-appwrite";
+import { Client , Databases , Account} from "react-native-appwrite";
 
 const config = {
     endpoint : process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT,
@@ -24,5 +24,6 @@ switch (Platform.OS){
     break
 }
 const databases = new Databases(client)
+const account = new Account(client)
 
-export { databases , config , client}
+export { databases , config , client , account}
