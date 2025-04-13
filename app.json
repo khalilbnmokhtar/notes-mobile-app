@@ -46,6 +46,12 @@
         "projectId": "28fde597-1acc-407b-9e4e-aa65ba65cad3"
       }
     },
-    "owner": "khalile"
+    "owner": "khalile",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/28fde597-1acc-407b-9e4e-aa65ba65cad3"
+    }
   }
 }
