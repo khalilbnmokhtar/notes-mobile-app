@@ -109,7 +109,7 @@ const NoteScreen = () => {
            {notes.length === 0 ? (
             <Text style={styles.noNotesText}>You have no notes</Text>
           ) : (
-            <NoteList notes={notes} onDelete={deleteNote} onEdit={editNote} />
+            <NoteList notes={notes} onDelete={DeleteNote} onEdit={updateNote} />
           )}
      
         </>
